@@ -3,10 +3,23 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
+const uri = "mongodb+srv://chewchew:mrr12345@beepboop.lfloe.mongodb.net/CST3144CW";
+let db;
 
 app.use(cors());
 
 app.use(express.json());
+
+MongoClient.connect(uri, { useUnifiedTopology: true }, (err, client) => {
+    if (err) {
+        console.error("Error connecting to MongoDB:", err);
+        return;
+    }
+    db = client.db('webstore'); 
+    console.log('Connected to MongoDB');
+});
 
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
