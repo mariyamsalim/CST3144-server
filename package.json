@@ -1,0 +1,13 @@
+{
+  "name": "static-file",
+  "private": true,
+  "author": "after school activities",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "mongodb": "^3.6.6"
+  }
+}
