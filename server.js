@@ -70,7 +70,7 @@ app.put('/collection/:collectionName/:id', (req, res, next) => {
     );
 });
 
-app.get('/search/lessons', (req, res, next) => {
+app.get('/search/activities', (req, res, next) => {
     const query = req.query.q;
     if (!query) {
         return res.send([]); 
@@ -78,7 +78,7 @@ app.get('/search/lessons', (req, res, next) => {
     const cleanQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(cleanQuery, 'i');
 
-    db.collection('lessons').find({
+    db.collection('activities').find({
         $or: [
             { title: regex },
             { location: regex }
