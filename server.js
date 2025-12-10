@@ -21,6 +21,11 @@ MongoClient.connect(uri, { useUnifiedTopology: true }, (err, client) => {
     console.log('Connected to MongoDB');
 });
 
+app.param('collectionName', (req, res, next, collectionName) => {
+    req.collection = db.collection(collectionName);
+    return next();
+});
+
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next(); 
