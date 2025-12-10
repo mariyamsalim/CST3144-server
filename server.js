@@ -58,15 +58,35 @@ app.post('/collection/:collectionName', (req, res, next) => {
 });
 
 app.put('/collection/:collectionName/:id', (req, res, next) => {
+    const { availableInventory } = req.body;
     req.collection.update(
         { id: parseInt(req.params.id) },
-        { $set: req.body },
+        { $set: { availableInventory: availableInventory } },
         { safe: true, multi: false },
         (e, result) => {
             if (e) return next(e);
             res.send((result.result.n === 1) ? {msg: 'success'} : {msg: 'error'});
         }
     );
+});
+
+app.get('/search/lessons', (req, res, next) => {
+    const query = req.query.q;
+    if (!query) {
+        return res.send([]); 
+    }
+    const cleanQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(cleanQuery, 'i');
+
+    db.collection('lessons').find({
+        $or: [
+            { title: regex },
+            { location: regex }
+        ]
+    }).toArray((e, results) => {
+        if (e) return next(e);
+        res.send(results);
+    });
 });
 
 const PORT = 3000;
