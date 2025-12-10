@@ -57,6 +57,18 @@ app.post('/collection/:collectionName', (req, res, next) => {
     });
 });
 
+app.put('/collection/:collectionName/:id', (req, res, next) => {
+    req.collection.update(
+        { id: parseInt(req.params.id) },
+        { $set: req.body },
+        { safe: true, multi: false },
+        (e, result) => {
+            if (e) return next(e);
+            res.send((result.result.n === 1) ? {msg: 'success'} : {msg: 'error'});
+        }
+    );
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
